@@ -30,7 +30,7 @@ public class PesertaController {
         });
     }
 
-    // ================= TABLE =================
+    // ================= TABLE ==================
     private void refreshTable() {
         DefaultTableModel model = (DefaultTableModel) view.table.getModel();
         model.setRowCount(0);
