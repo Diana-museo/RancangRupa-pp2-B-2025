@@ -20,6 +20,7 @@ public class PesertaView extends JFrame {
     public JTable table;
     public DefaultTableModel tableModel;
 
+    // Konstruktor kelas peserta view
     public PesertaView() {
         super("Manajemen Peserta Kursus");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
