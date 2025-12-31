@@ -1,6 +1,6 @@
 package id.rancangrupa.kelasync.model;
 
-public class Peserta{
+public class Peserta {
 
     private int idPeserta;
     private String namaPeserta;
@@ -8,7 +8,8 @@ public class Peserta{
     private String alamatPeserta;
 
     // constructor kosong
-    public Peserta() {}
+    public Peserta() {
+    }
 
     // constructor lengkap
     public Peserta(int idPeserta, String namaPeserta, String noHpPeserta, String alamatPeserta) {
