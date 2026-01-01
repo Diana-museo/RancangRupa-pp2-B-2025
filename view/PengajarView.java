@@ -1,10 +1,16 @@
 package id.rancangrupa.kelasync.view;
 
+import id.rancangrupa.kelasync.controller.PengajarController;
+import id.rancangrupa.kelasync.util.DBConnection;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
 public class PengajarView extends JFrame {
+    // Inisialisasi Font
+    private Font customFont = new Font("Times New Roman", Font.PLAIN, 14);
+    private Font headerFont = new Font("Times New Roman", Font.BOLD, 14);
+
     public JTextField txtNama = new JTextField(20);
     public JTextField txtKeahlian = new JTextField(20);
     public JTextField txtNoHp = new JTextField(20);
@@ -28,13 +34,26 @@ public class PengajarView extends JFrame {
         // Panel Input
         JPanel pnlInput = new JPanel(new GridLayout(5, 2, 5, 5));
         pnlInput.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        pnlInput.add(new JLabel("Nama Pengajar:")); pnlInput.add(txtNama);
-        pnlInput.add(new JLabel("Keahlian:")); pnlInput.add(txtKeahlian);
-        pnlInput.add(new JLabel("No HP:")); pnlInput.add(txtNoHp);
-        pnlInput.add(new JLabel("Alamat:")); pnlInput.add(txtAlamat);
         
+        // Menambahkan Label dengan Font Times New Roman
+        pnlInput.add(createStyledLabel("Nama Pengajar:")); pnlInput.add(txtNama);
+        pnlInput.add(createStyledLabel("Keahlian:")); pnlInput.add(txtKeahlian);
+        pnlInput.add(createStyledLabel("No HP:")); pnlInput.add(txtNoHp);
+        pnlInput.add(createStyledLabel("Alamat:")); pnlInput.add(txtAlamat);
+        
+        // Terapkan font ke TextField
+        txtNama.setFont(customFont);
+        txtKeahlian.setFont(customFont);
+        txtNoHp.setFont(customFont);
+        txtAlamat.setFont(customFont);
+
         // Panel Tombol
         JPanel pnlTombol = new JPanel();
+        applyButtonFont(btnSimpan);
+        applyButtonFont(btnUpdate);
+        applyButtonFont(btnHapus);
+        applyButtonFont(btnBersih);
+        
         pnlTombol.add(btnSimpan);
         pnlTombol.add(btnUpdate);
         pnlTombol.add(btnHapus);
@@ -44,9 +63,26 @@ public class PengajarView extends JFrame {
         // Tabel
         tableModel = new DefaultTableModel(new Object[]{"ID", "Nama", "Keahlian", "No HP", "Alamat"}, 0);
         tabelPengajar.setModel(tableModel);
+        tabelPengajar.setFont(customFont); // Font isi tabel
+        tabelPengajar.getTableHeader().setFont(headerFont); // Font judul kolom
+        tabelPengajar.setRowHeight(25); // Menyesuaikan tinggi baris agar font terlihat bagus
 
         add(pnlInput, BorderLayout.NORTH);
         add(new JScrollPane(tabelPengajar), BorderLayout.CENTER);
+        
+        new PengajarController(this);
+    }
+
+    // Helper method untuk membuat Label dengan font custom
+    private JLabel createStyledLabel(String text) {
+        JLabel label = new JLabel(text);
+        label.setFont(customFont);
+        return label;
+    }
+
+    // Helper method untuk menerapkan font ke tombol
+    private void applyButtonFont(JButton button) {
+        button.setFont(headerFont);
     }
 
     @Override
