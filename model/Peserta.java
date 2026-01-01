@@ -1,6 +1,6 @@
 package id.rancangrupa.kelasync.model;
 
-public class Peserta{
+public class Peserta {
 
     private int idPeserta;
     private String namaPeserta;
@@ -18,7 +18,7 @@ public class Peserta{
         this.alamatPeserta = alamatPeserta;
     }
 
-    // constructor tanpa id (untuk INSERT)
+    // constructor tanpa id (INSERT)
     public Peserta(String namaPeserta, String noHpPeserta, String alamatPeserta) {
         this(0, namaPeserta, noHpPeserta, alamatPeserta);
     }
@@ -54,24 +54,5 @@ public class Peserta{
 
     public void setAlamatPeserta(String alamatPeserta) {
         this.alamatPeserta = alamatPeserta;
-    }
-
-    // validasi sederhana
-    public void validateOrThrow() {
-        if (namaPeserta == null || namaPeserta.trim().isEmpty()) {
-            throw new IllegalArgumentException("Nama peserta harus diisi");
-        }
-
-        if (noHpPeserta == null || noHpPeserta.trim().isEmpty()) {
-            throw new IllegalArgumentException("No HP peserta harus diisi");
-        }
-
-        if (!noHpPeserta.matches("[0-9+ ]{8,15}")) {
-            throw new IllegalArgumentException("No HP tidak valid");
-        }
-
-        if (alamatPeserta == null || alamatPeserta.trim().isEmpty()) {
-            throw new IllegalArgumentException("Alamat peserta harus diisi");
-        }
     }
 }
