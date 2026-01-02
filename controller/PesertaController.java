@@ -3,7 +3,6 @@ package id.rancangrupa.kelasync.controller;
 import id.rancangrupa.kelasync.model.Peserta;
 import id.rancangrupa.kelasync.util.DBConnection;
 import id.rancangrupa.kelasync.view.PesertaView;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.sql.*;
@@ -12,17 +11,19 @@ public class PesertaController {
 
     private final PesertaView view;
 
+    // ================= KONSTRUKTOR =================
     public PesertaController(PesertaView view) {
         this.view = view;
         attachListeners();
         refreshTable();
     }
 
+    // ================= LISTENER =================
     private void attachListeners() {
         view.btnAdd.addActionListener(e -> addPeserta());
         view.btnUpdate.addActionListener(e -> updatePeserta());
         view.btnDelete.addActionListener(e -> deletePeserta());
-        view.btnClear.addActionListener(e -> clearForm());
+        view.btnClear.addActionListener(e -> view.clearForm());
         view.btnRefresh.addActionListener(e -> refreshTable());
 
         view.table.getSelectionModel().addListSelectionListener(e -> {
@@ -30,7 +31,7 @@ public class PesertaController {
         });
     }
 
-    // ================= TABLE ==================
+    // ================= TABLE =================
     private void refreshTable() {
         DefaultTableModel model = (DefaultTableModel) view.table.getModel();
         model.setRowCount(0);
@@ -71,7 +72,7 @@ public class PesertaController {
         view.taAlamat.setText(model.getValueAt(row, 3).toString());
     }
 
-    // ================= VALIDATION =================
+    // ================= VALIDASI =================
     private boolean validateForm(Peserta p) {
         String nama = view.tfNama.getText().trim();
         String noHp = view.tfNoHp.getText().trim();
@@ -102,10 +103,11 @@ public class PesertaController {
             return false;
         }
 
-        // set ke model
+        // set data ke model
         p.setNamaPeserta(nama);
         p.setNoHpPeserta(noHp);
         p.setAlamatPeserta(alamat);
+
         return true;
     }
 
@@ -128,7 +130,7 @@ public class PesertaController {
 
             ps.executeUpdate();
             JOptionPane.showMessageDialog(view, "Peserta berhasil ditambahkan");
-            clearForm();
+            view.clearForm();
             refreshTable();
 
         } catch (SQLException ex) {
@@ -165,7 +167,7 @@ public class PesertaController {
 
             ps.executeUpdate();
             JOptionPane.showMessageDialog(view, "Peserta berhasil diupdate");
-            clearForm();
+            view.clearForm();
             refreshTable();
 
         } catch (SQLException ex) {
@@ -200,20 +202,12 @@ public class PesertaController {
             ps.setInt(1, id);
             ps.executeUpdate();
             JOptionPane.showMessageDialog(view, "Peserta berhasil dihapus");
-            clearForm();
+            view.clearForm();
             refreshTable();
 
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(view,
                     "Gagal menghapus peserta:\n" + ex.getMessage());
         }
-    }
-
-    private void clearForm() {
-        view.tfId.setText("");
-        view.tfNama.setText("");
-        view.tfNoHp.setText("");
-        view.taAlamat.setText("");
-        view.table.clearSelection();
     }
 }
