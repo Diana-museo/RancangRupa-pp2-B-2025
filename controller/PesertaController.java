@@ -23,7 +23,11 @@ public class PesertaController {
         view.btnAdd.addActionListener(e -> addPeserta());
         view.btnUpdate.addActionListener(e -> updatePeserta());
         view.btnDelete.addActionListener(e -> deletePeserta());
+
         view.btnClear.addActionListener(e -> view.clearForm());
+
+        view.btnClear.addActionListener(e -> clearForm());
+
         view.btnRefresh.addActionListener(e -> refreshTable());
 
         view.table.getSelectionModel().addListSelectionListener(e -> {
@@ -31,7 +35,8 @@ public class PesertaController {
         });
     }
 
-    // ================= TABLE =================
+
+    // ================= TABLE ==================
     private void refreshTable() {
         DefaultTableModel model = (DefaultTableModel) view.table.getModel();
         model.setRowCount(0);
@@ -72,7 +77,7 @@ public class PesertaController {
         view.taAlamat.setText(model.getValueAt(row, 3).toString());
     }
 
-    // ================= VALIDASI =================
+    // ================= VALIDATION =================
     private boolean validateForm(Peserta p) {
         String nama = view.tfNama.getText().trim();
         String noHp = view.tfNoHp.getText().trim();
@@ -108,6 +113,10 @@ public class PesertaController {
         p.setNoHpPeserta(noHp);
         p.setAlamatPeserta(alamat);
 
+        // set ke model
+        p.setNamaPeserta(nama);
+        p.setNoHpPeserta(noHp);
+        p.setAlamatPeserta(alamat);
         return true;
     }
 
@@ -130,7 +139,11 @@ public class PesertaController {
 
             ps.executeUpdate();
             JOptionPane.showMessageDialog(view, "Peserta berhasil ditambahkan");
+
             view.clearForm();
+
+            clearForm();
+
             refreshTable();
 
         } catch (SQLException ex) {
@@ -168,6 +181,8 @@ public class PesertaController {
             ps.executeUpdate();
             JOptionPane.showMessageDialog(view, "Peserta berhasil diupdate");
             view.clearForm();
+
+            clearForm();
             refreshTable();
 
         } catch (SQLException ex) {
@@ -203,11 +218,22 @@ public class PesertaController {
             ps.executeUpdate();
             JOptionPane.showMessageDialog(view, "Peserta berhasil dihapus");
             view.clearForm();
+
+            clearForm();
+
             refreshTable();
 
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(view,
                     "Gagal menghapus peserta:\n" + ex.getMessage());
         }
+    }
+
+    private void clearForm() {
+        view.tfId.setText("");
+        view.tfNama.setText("");
+        view.tfNoHp.setText("");
+        view.taAlamat.setText("");
+        view.table.clearSelection();
     }
 }
