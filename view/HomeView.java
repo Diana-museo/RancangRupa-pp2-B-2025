@@ -9,9 +9,15 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
+// VIEW: Home
+// Halaman utama aplikasi Kelasync
+// Berisi menu navigasi ke halaman Peserta, Pengajar, Kursus, dan Pendaftaran
 public class HomeView extends JFrame {
 
+    // Konstruktor HomeView
+    // Akan dijalankan saat aplikasi pertama kali dibuka
     public HomeView() {
         setTitle("Kelasync App");
         setSize(450, 350);
@@ -19,29 +25,33 @@ public class HomeView extends JFrame {
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
-        // ---- JUDUL -----
+        // Label sambutan di bagian atas
         JLabel lblWelcome = new JLabel("Halo, selamat datang di", SwingConstants.CENTER);
         JLabel lblTitle = new JLabel("Kelasync App", SwingConstants.CENTER);
 
+        // Pengaturan font judul
         lblWelcome.setFont(new Font("Times New Roman", Font.PLAIN, 16));
         lblTitle.setFont(new Font("Times New Roman", Font.BOLD, 28));
 
+        // Panel header untuk judul aplikasi
         JPanel panelHeader = new JPanel(new GridLayout(2, 1));
         panelHeader.add(lblWelcome);
         panelHeader.add(lblTitle);
 
-        // ---- MENU ----
+        // Tombol menu utama
         JButton btnPeserta = new JButton("Peserta");
         JButton btnPengajar = new JButton("Pengajar");
         JButton btnKursus = new JButton("Kursus");
         JButton btnPendaftaran = new JButton("Pendaftaran");
 
+        // Font untuk tombol menu
         Font menuFont = new Font("Times New Roman", Font.PLAIN, 14);
         btnPeserta.setFont(menuFont);
         btnPengajar.setFont(menuFont);
         btnKursus.setFont(menuFont);
         btnPendaftaran.setFont(menuFont);
 
+        // Panel menu di bagian tengah
         JPanel panelMenu = new JPanel(new GridLayout(4, 1, 10, 10));
         panelMenu.setBorder(BorderFactory.createEmptyBorder(20, 100, 20, 100));
         panelMenu.add(btnPeserta);
@@ -49,10 +59,11 @@ public class HomeView extends JFrame {
         panelMenu.add(btnKursus);
         panelMenu.add(btnPendaftaran);
 
+        // Menambahkan panel ke frame
         add(panelHeader, BorderLayout.NORTH);
         add(panelMenu, BorderLayout.CENTER);
 
-        // ---- ACTION ----
+        // Aksi tombol untuk membuka halaman terkait
         btnPeserta.addActionListener(e -> new PesertaView().setVisible(true));
         btnPengajar.addActionListener(e -> new PengajarView().setVisible(true));
         btnKursus.addActionListener(e -> new KursusView().setVisible(true));
