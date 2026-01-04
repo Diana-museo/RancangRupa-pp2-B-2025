@@ -3,7 +3,6 @@ package id.rancangrupa.kelasync.controller;
 import id.rancangrupa.kelasync.model.Peserta;
 import id.rancangrupa.kelasync.util.DBConnection;
 import id.rancangrupa.kelasync.view.PesertaView;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.sql.*;
@@ -12,23 +11,30 @@ public class PesertaController {
 
     private final PesertaView view;
 
+    // ================= KONSTRUKTOR =================
     public PesertaController(PesertaView view) {
         this.view = view;
         attachListeners();
         refreshTable();
     }
 
+    // ================= LISTENER =================
     private void attachListeners() {
         view.btnAdd.addActionListener(e -> addPeserta());
         view.btnUpdate.addActionListener(e -> updatePeserta());
         view.btnDelete.addActionListener(e -> deletePeserta());
+
+        view.btnClear.addActionListener(e -> view.clearForm());
+
         view.btnClear.addActionListener(e -> clearForm());
+
         view.btnRefresh.addActionListener(e -> refreshTable());
 
         view.table.getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) populateSelectedRowToForm();
         });
     }
+
 
     // ================= TABLE ==================
     private void refreshTable() {
@@ -102,6 +108,11 @@ public class PesertaController {
             return false;
         }
 
+        // set data ke model
+        p.setNamaPeserta(nama);
+        p.setNoHpPeserta(noHp);
+        p.setAlamatPeserta(alamat);
+
         // set ke model
         p.setNamaPeserta(nama);
         p.setNoHpPeserta(noHp);
@@ -128,7 +139,11 @@ public class PesertaController {
 
             ps.executeUpdate();
             JOptionPane.showMessageDialog(view, "Peserta berhasil ditambahkan");
+
+            view.clearForm();
+
             clearForm();
+
             refreshTable();
 
         } catch (SQLException ex) {
@@ -165,6 +180,8 @@ public class PesertaController {
 
             ps.executeUpdate();
             JOptionPane.showMessageDialog(view, "Peserta berhasil diupdate");
+            view.clearForm();
+
             clearForm();
             refreshTable();
 
@@ -200,7 +217,10 @@ public class PesertaController {
             ps.setInt(1, id);
             ps.executeUpdate();
             JOptionPane.showMessageDialog(view, "Peserta berhasil dihapus");
+            view.clearForm();
+
             clearForm();
+
             refreshTable();
 
         } catch (SQLException ex) {
