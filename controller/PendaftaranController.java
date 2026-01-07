@@ -1,8 +1,8 @@
-package id.rancangrupa.kelasync2.controller;
+package id.rancangrupa.kelasync.controller;
 
-import id.rancangrupa.kelasync2.util.DBConnection;
-import id.rancangrupa.kelasync2.view.PendaftaranView;
-import id.rancangrupa.kelasync2.view.ReportView;
+import id.rancangrupa.kelasync.util.DBConnection;
+import id.rancangrupa.kelasync.view.PendaftaranView;
+import id.rancangrupa.kelasync.view.ReportView;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -141,7 +141,9 @@ public class PendaftaranController {
             // Refresh tabel pendaftaran
             loadData();
 
-            JOptionPane.showMessageDialog(view, "Data berhasil di-refresh");
+            // HAPUS BARIS INI untuk tidak menampilkan pesan
+            // JOptionPane.showMessageDialog(view, "Data berhasil di-refresh");
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(view, "Error refreshing data: " + e.getMessage());
         }
