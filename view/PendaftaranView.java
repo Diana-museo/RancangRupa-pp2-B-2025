@@ -15,6 +15,7 @@ public class PendaftaranView extends JFrame {
     // Diatur memakai Times New Roman agar konsisten dengan tampilan lain
     private Font fontPlain = new Font("Times New Roman", Font.PLAIN, 14);
     private Font fontBold = new Font("Times New Roman", Font.BOLD, 14);
+    private Font fontSmallItalic = new Font("Times New Roman", Font.ITALIC, 11); // Font untuk teks kecil italic
 
     // ===== FORM INPUT =====
     public JComboBox<String> cbPeserta = new JComboBox<>(); // Pilih peserta
@@ -22,9 +23,10 @@ public class PendaftaranView extends JFrame {
     public JTextField tfTanggal = new JTextField(15); // Input tanggal daftar
 
     // ===== BUTTON =====
-    public JButton btnSimpan = new JButton("Simpan"); // Simpan data pendaftaran
+    public JButton btnTambah = new JButton("Tambah"); // Tambah data pendaftaran
     public JButton btnHapus = new JButton("Hapus"); // Hapus data terpilih
-    public JButton btnBersih = new JButton("Bersih"); // Bersihkan form
+    public JButton btnClear = new JButton("Clear"); // Bersihkan form
+    public JButton btnRefresh = new JButton("Refresh"); // Refresh tabel
     public JButton btnReport = new JButton("Report"); // Masuk ke halaman laporan
 
     // ===== TABLE =====
@@ -34,14 +36,14 @@ public class PendaftaranView extends JFrame {
     // Konstruktor kelas PendaftaranView
     public PendaftaranView() {
         setTitle("Kelasync App - Pendaftaran Kursus");
-        setSize(900, 550);
+        setSize(900, 600); // Ditambah tinggi sedikit untuk teks tambahan
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout(10, 10));
 
         // ===== PANEL FORM =====
         // Panel atas untuk input data pendaftaran
-        JPanel pnlForm = new JPanel(new GridLayout(4, 2, 10, 10));
+        JPanel pnlForm = new JPanel(new GridLayout(4, 2, 10, 5)); // Row spacing dikurangi untuk teks kecil
         pnlForm.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         pnlForm.add(createLabel("Peserta:"));
@@ -50,20 +52,35 @@ public class PendaftaranView extends JFrame {
         pnlForm.add(createLabel("Kursus:"));
         pnlForm.add(cbKursus);
 
-        pnlForm.add(createLabel("Tanggal Daftar:"));
-        pnlForm.add(tfTanggal);
+        // Panel untuk label tanggal + informasi kecil
+        JPanel pnlTanggalLabel = new JPanel(new BorderLayout(0, 2));
+
+        // Label utama "Tanggal Daftar"
+        JLabel lblTanggal = createLabel("Tanggal Daftar (yyyy-mm-dd):");
+        pnlTanggalLabel.add(lblTanggal, BorderLayout.NORTH);
+
+        // Teks informasi kecil di bawah label utama
+        JLabel infoLabel = new JLabel("Kolom tanggal daftar bisa dikosongkan dan akan digenerate otomatis");
+        infoLabel.setFont(fontSmallItalic);
+        infoLabel.setForeground(Color.DARK_GRAY);
+        pnlTanggalLabel.add(infoLabel, BorderLayout.SOUTH);
+
+        pnlForm.add(pnlTanggalLabel);
+        pnlForm.add(tfTanggal); // Field tanggal tetap ukuran normal
 
         // ===== PANEL BUTTON =====
         // Panel tombol aksi (CRUD & Report)
         JPanel pnlButton = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        applyButtonFont(btnSimpan);
+        applyButtonFont(btnTambah);
         applyButtonFont(btnHapus);
-        applyButtonFont(btnBersih);
+        applyButtonFont(btnClear);
+        applyButtonFont(btnRefresh);
         applyButtonFont(btnReport);
 
-        pnlButton.add(btnSimpan);
+        pnlButton.add(btnTambah);
         pnlButton.add(btnHapus);
-        pnlButton.add(btnBersih);
+        pnlButton.add(btnClear);
+        pnlButton.add(btnRefresh);
         pnlButton.add(btnReport);
 
         pnlForm.add(new JLabel(""));
