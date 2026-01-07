@@ -1,6 +1,6 @@
-package id.rancangrupa.kelasync2.view;
+package id.rancangrupa.kelasync.view;
 
-import id.rancangrupa.kelasync2.controller.KursusController;
+import id.rancangrupa.kelasync.controller.KursusController;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
