@@ -1,8 +1,8 @@
-package id.rancangrupa.kelasync.controller;
+package id.rancangrupa.kelasync2.controller;
 
-import id.rancangrupa.kelasync.util.DBConnection;
-import id.rancangrupa.kelasync.view.PendaftaranView;
-import id.rancangrupa.kelasync.view.ReportView;
+import id.rancangrupa.kelasync2.util.DBConnection;
+import id.rancangrupa.kelasync2.view.PendaftaranView;
+import id.rancangrupa.kelasync2.view.ReportView;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -25,7 +25,7 @@ public class PendaftaranController {
     // Menghubungkan semua tombol dengan aksi
     private void attachListener() {
 
-        view.btnSimpan.addActionListener(e -> {
+        view.btnTambah.addActionListener(e -> {
             try {
                 int idPeserta = Integer.parseInt(
                         view.cbPeserta.getSelectedItem().toString().split(" - ")[0]);
@@ -49,10 +49,17 @@ public class PendaftaranController {
                 delete(id);
                 loadData();
                 bersihkanForm();
+            } else {
+                JOptionPane.showMessageDialog(view, "Pilih data yang akan dihapus terlebih dahulu");
             }
         });
 
-        view.btnBersih.addActionListener(e -> bersihkanForm());
+        view.btnClear.addActionListener(e -> bersihkanForm());
+
+        // Tombol Refresh - mengambil data terbaru dari database
+        view.btnRefresh.addActionListener(e -> {
+            refreshData();
+        });
 
         view.btnReport.addActionListener(e -> {
             new ReportView().setVisible(true);
@@ -73,7 +80,7 @@ public class PendaftaranController {
                         r.getInt(1) + " - " + r.getString(2));
             }
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(view, e.getMessage());
+            JOptionPane.showMessageDialog(view, "Error loading peserta: " + e.getMessage());
         }
     }
 
@@ -90,7 +97,7 @@ public class PendaftaranController {
                         r.getInt(1) + " - " + r.getString(2));
             }
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(view, e.getMessage());
+            JOptionPane.showMessageDialog(view, "Error loading kursus: " + e.getMessage());
         }
     }
 
@@ -118,7 +125,25 @@ public class PendaftaranController {
                 });
             }
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(view, e.getMessage());
+            JOptionPane.showMessageDialog(view, "Error loading data: " + e.getMessage());
+        }
+    }
+
+    // Fungsi untuk merefresh semua data (tabel dan combobox)
+    private void refreshData() {
+        try {
+            // Refresh combobox peserta
+            loadPeserta();
+
+            // Refresh combobox kursus
+            loadKursus();
+
+            // Refresh tabel pendaftaran
+            loadData();
+
+            JOptionPane.showMessageDialog(view, "Data berhasil di-refresh");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(view, "Error refreshing data: " + e.getMessage());
         }
     }
 
@@ -140,7 +165,7 @@ public class PendaftaranController {
                 return rs.getInt(1) > 0;
             }
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(view, e.getMessage());
+            JOptionPane.showMessageDialog(view, "Error checking duplicate: " + e.getMessage());
         }
         return false;
     }
@@ -163,9 +188,9 @@ public class PendaftaranController {
             ps.setInt(2, idKursus);
             ps.executeUpdate();
 
-            JOptionPane.showMessageDialog(view, "Pendaftaran berhasil disimpan");
+            JOptionPane.showMessageDialog(view, "Pendaftaran berhasil ditambahkan");
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(view, e.getMessage());
+            JOptionPane.showMessageDialog(view, "Error inserting data: " + e.getMessage());
         }
     }
 
@@ -179,14 +204,18 @@ public class PendaftaranController {
 
             JOptionPane.showMessageDialog(view, "Data berhasil dihapus");
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(view, e.getMessage());
+            JOptionPane.showMessageDialog(view, "Error deleting data: " + e.getMessage());
         }
     }
 
     // Membersihkan input form
     private void bersihkanForm() {
-        view.cbPeserta.setSelectedIndex(0);
-        view.cbKursus.setSelectedIndex(0);
+        if (view.cbPeserta.getItemCount() > 0) {
+            view.cbPeserta.setSelectedIndex(0);
+        }
+        if (view.cbKursus.getItemCount() > 0) {
+            view.cbKursus.setSelectedIndex(0);
+        }
         view.tfTanggal.setText("");
         view.tabel.clearSelection();
     }
