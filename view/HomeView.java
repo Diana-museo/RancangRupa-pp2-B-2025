@@ -1,4 +1,4 @@
-package id.rancangrupa.kelasync.view;
+package id.rancangrupa.kelasync2.view;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
@@ -39,24 +39,24 @@ public class HomeView extends JFrame {
         panelHeader.add(lblTitle);
 
         // Tombol menu utama
-        JButton btnPeserta = new JButton("Peserta");
         JButton btnPengajar = new JButton("Pengajar");
         JButton btnKursus = new JButton("Kursus");
+        JButton btnPeserta = new JButton("Peserta");
         JButton btnPendaftaran = new JButton("Pendaftaran");
 
         // Font untuk tombol menu
         Font menuFont = new Font("Times New Roman", Font.PLAIN, 14);
-        btnPeserta.setFont(menuFont);
         btnPengajar.setFont(menuFont);
         btnKursus.setFont(menuFont);
+        btnPeserta.setFont(menuFont);
         btnPendaftaran.setFont(menuFont);
 
         // Panel menu di bagian tengah
         JPanel panelMenu = new JPanel(new GridLayout(4, 1, 10, 10));
         panelMenu.setBorder(BorderFactory.createEmptyBorder(20, 100, 20, 100));
-        panelMenu.add(btnPeserta);
         panelMenu.add(btnPengajar);
         panelMenu.add(btnKursus);
+        panelMenu.add(btnPeserta);
         panelMenu.add(btnPendaftaran);
 
         // Menambahkan panel ke frame
@@ -64,9 +64,9 @@ public class HomeView extends JFrame {
         add(panelMenu, BorderLayout.CENTER);
 
         // Aksi tombol untuk membuka halaman terkait
-        btnPeserta.addActionListener(e -> new PesertaView().setVisible(true));
         btnPengajar.addActionListener(e -> new PengajarView().setVisible(true));
         btnKursus.addActionListener(e -> new KursusView().setVisible(true));
+        btnPeserta.addActionListener(e -> new PesertaView().setVisible(true));
         btnPendaftaran.addActionListener(e -> new PendaftaranView().setVisible(true));
     }
 }
