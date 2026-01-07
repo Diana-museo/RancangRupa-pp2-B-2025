@@ -1,8 +1,8 @@
-package id.rancangrupa.kelasync2.controller;
+package id.rancangrupa.kelasync.controller;
 
-import id.rancangrupa.kelasync2.util.DBConnection;
-import id.rancangrupa.kelasync2.view.PendaftaranView;
-import id.rancangrupa.kelasync2.view.ReportView;
+import id.rancangrupa.kelasync.util.DBConnection;
+import id.rancangrupa.kelasync.view.PendaftaranView;
+import id.rancangrupa.kelasync.view.ReportView;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;

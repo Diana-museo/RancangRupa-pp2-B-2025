@@ -1,4 +1,4 @@
-package id.rancangrupa.kelasync2.view;
+package id.rancangrupa.kelasync.view;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
