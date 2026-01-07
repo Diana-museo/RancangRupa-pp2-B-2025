@@ -1,6 +1,6 @@
-package id.rancangrupa.kelasync.view;
+package id.rancangrupa.kelasync2.view;
 
-import id.rancangrupa.kelasync.controller.KursusController;
+import id.rancangrupa.kelasync2.controller.KursusController;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -12,23 +12,27 @@ public class KursusView extends JFrame {
 
     // ---- Deklarasi Komponen Form -----
     public JTextField tfId = new JTextField();
-    public JTextField tfNama = new JTextField();
+    public JTextField tfNama = new JTextField(15);
     public JTextArea taMateri = new JTextArea(3, 20);
     public JComboBox<String> cbHari = new JComboBox<>();
-    public JTextField tfJamMulai = new JTextField();
-    public JTextField tfJamSelesai = new JTextField();
+    public JTextField tfJamMulai = new JTextField(15);
+    public JTextField tfJamSelesai = new JTextField(15);
     public JComboBox<String> cbPengajar = new JComboBox<>();
 
     // ---- Deklarasi Tombol -----
-    public JButton btnAdd = new JButton("Simpan"); 
-    public JButton btnUpdate = new JButton("Update");
+    public JButton btnAdd = new JButton("Tambah");
+    public JButton btnUpdate = new JButton("Ubah");
     public JButton btnDelete = new JButton("Hapus");
-    public JButton btnClear = new JButton("Bersih"); 
+    public JButton btnClear = new JButton("Clear");
     public JButton btnRefresh = new JButton("Refresh");
 
     // ---- Deklarasi Tabel -----
     public JTable table;
     public DefaultTableModel tableModel;
+
+    // ---- Font -----
+    private Font fontPlain = new Font("Times New Roman", Font.PLAIN, 14);
+    private Font fontBold = new Font("Times New Roman", Font.BOLD, 14);
 
     // ---- Konstruktor View -----
     public KursusView() {
@@ -36,111 +40,122 @@ public class KursusView extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Tidak tertutup semua
         setSize(900, 600);
         setLocationRelativeTo(null);
+        setLayout(new BorderLayout(10, 10));
 
-        // ---- Panel Form Input -----
-        JPanel form = new JPanel(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
-        c.insets = new Insets(6, 10, 6, 10);
-        c.anchor = GridBagConstraints.WEST;
+        // ---- Panel Utama untuk Form -----
+        JPanel pnlMainForm = new JPanel(new BorderLayout(10, 10));
+        pnlMainForm.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        // ---- Panel Input dengan 2 kolom -----
+        JPanel pnlInput = new JPanel(new GridLayout(3, 4, 10, 10));
 
         tfId.setVisible(false);
-        
-        // ---- Tambah Label dan Field -----
-        c.gridx = 0; c.gridy = 0;
-        form.add(new JLabel("Mata Pelajaran:"), c);
-        c.gridx = 1; c.weightx = 1.0; c.fill = GridBagConstraints.HORIZONTAL;
-        form.add(tfNama, c);
 
-        c.gridx = 0; c.gridy = 1; c.weightx = 0;
-        form.add(new JLabel("Materi:"), c);
-        c.gridx = 1; c.fill = GridBagConstraints.HORIZONTAL;
-        form.add(new JScrollPane(taMateri), c);
+        // ---- Baris 1 -----
+        // Kolom 1: Mata Pelajaran
+        pnlInput.add(createLabel("Mata Pelajaran:"));
+        pnlInput.add(tfNama);
 
-        c.gridx = 0; c.gridy = 2;
-        form.add(new JLabel("Hari:"), c);
-        c.gridx = 1; c.fill = GridBagConstraints.NONE;
-        form.add(cbHari, c);
+        // Kolom 3: Hari
+        pnlInput.add(createLabel("Hari:"));
+        pnlInput.add(cbHari);
 
-        c.gridx = 0; c.gridy = 3;
-        form.add(new JLabel("Jam Mulai:"), c);
-        c.gridx = 1; c.fill = GridBagConstraints.HORIZONTAL;
-        form.add(tfJamMulai, c);
+        // ---- Baris 2 -----
+        // Kolom 1: Materi
+        pnlInput.add(createLabel("Materi:"));
+        JScrollPane scrollMateri = new JScrollPane(taMateri);
+        scrollMateri.setPreferredSize(new Dimension(200, 60));
+        pnlInput.add(scrollMateri);
 
-        c.gridx = 0; c.gridy = 4;
-        form.add(new JLabel("Jam Selesai:"), c);
-        c.gridx = 1; form.add(tfJamSelesai, c);
+        // Kolom 3: Jam Mulai
+        pnlInput.add(createLabel("Jam Mulai (jam:menit):"));
+        pnlInput.add(tfJamMulai);
 
-        c.gridx = 0; c.gridy = 5;
-        form.add(new JLabel("Pengajar:"), c);
-        c.gridx = 1; form.add(cbPengajar, c);
+        // ---- Baris 3 -----
+        // Kolom 1: Pengajar
+        pnlInput.add(createLabel("Pengajar:"));
+        pnlInput.add(cbPengajar);
 
-        // ---- Panel Tombol -----
-        JPanel buttons = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        buttons.add(btnAdd); 
-        buttons.add(btnUpdate); 
-        buttons.add(btnDelete); 
-        buttons.add(btnClear); 
-        buttons.add(btnRefresh);
+        // Kolom 3: Jam Selesai
+        pnlInput.add(createLabel("Jam Selesai (jam:menit):"));
+        pnlInput.add(tfJamSelesai);
 
-        // Tombol rapi di bagian atas
-        JPanel northPanel = new JPanel(new BorderLayout());
-        northPanel.add(form, BorderLayout.CENTER);
-        northPanel.add(buttons, BorderLayout.SOUTH);
+        // ---- Panel untuk Input + Tombol -----
+        JPanel pnlInputWithButtons = new JPanel(new BorderLayout(10, 10));
+        pnlInputWithButtons.add(pnlInput, BorderLayout.CENTER);
+
+        // ---- Panel Tombol di pojok kanan bawah -----
+        JPanel pnlButton = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        applyButtonFont(btnAdd);
+        applyButtonFont(btnUpdate);
+        applyButtonFont(btnDelete);
+        applyButtonFont(btnClear);
+        applyButtonFont(btnRefresh);
+
+        pnlButton.add(btnAdd);
+        pnlButton.add(btnUpdate);
+        pnlButton.add(btnDelete);
+        pnlButton.add(btnClear);
+        pnlButton.add(btnRefresh);
+
+        pnlInputWithButtons.add(pnlButton, BorderLayout.SOUTH);
+
+        // ---- Terapkan Font ke Komponen -----
+        tfNama.setFont(fontPlain);
+        taMateri.setFont(fontPlain);
+        cbHari.setFont(fontPlain);
+        tfJamMulai.setFont(fontPlain);
+        tfJamSelesai.setFont(fontPlain);
+        cbPengajar.setFont(fontPlain);
 
         // ---- Inisialisasi Tabel -----
-        String[] cols = {"ID", "Mata Pelajaran", "Materi", "Hari", "Jam Mulai", "Jam Selesai", "Pengajar ID"};
+        String[] cols = { "ID", "Mata Pelajaran", "Materi", "Hari", "Jam Mulai", "Jam Selesai", "Pengajar ID" };
         tableModel = new DefaultTableModel(cols, 0) {
-            @Override 
-            public boolean isCellEditable(int r, int c) { return false; } // Tabel tidak bisa diedit langsung
+            @Override
+            public boolean isCellEditable(int r, int c) {
+                return false;
+            } // Tabel tidak bisa diedit langsung
         };
         table = new JTable(tableModel);
+        table.setFont(fontPlain);
+        table.getTableHeader().setFont(fontBold);
+        table.setRowHeight(24);
         JScrollPane spTable = new JScrollPane(table);
 
         // ---- Isi Combobox Hari -----
-        String[] hari = {"Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"};
-        for (String h : hari) { 
-            cbHari.addItem(h); 
+        String[] hari = { "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu" };
+        for (String h : hari) {
+            cbHari.addItem(h);
         }
 
         // ---- Layout Utama -----
-        getContentPane().setLayout(new BorderLayout(10, 10));
-        getContentPane().add(northPanel, BorderLayout.NORTH);
-        getContentPane().add(spTable, BorderLayout.CENTER);
-
-        // ---- Apply Font -----
-        applyTimesNewRoman();
+        pnlMainForm.add(pnlInputWithButtons, BorderLayout.NORTH);
+        add(pnlMainForm, BorderLayout.NORTH);
+        add(spTable, BorderLayout.CENTER);
 
         // ---- Inisialisasi Controller -----
         this.controller = new KursusController(this);
     }
 
-    // ---- Apply Font Times New Roman -----
-    private void applyTimesNewRoman() {
-        Font plain = new Font("Times New Roman", Font.PLAIN, 12);
-        Font bold  = new Font("Times New Roman", Font.BOLD, 12);
-        if (table.getTableHeader() != null) {
-            table.getTableHeader().setFont(bold); // header tabel bold
-        }
-        setFontRecursively(getContentPane(), plain);
+    // ---- Helper untuk membuat label -----
+    private JLabel createLabel(String text) {
+        JLabel l = new JLabel(text);
+        l.setFont(fontPlain);
+        return l;
     }
 
-    // ---- Set Font Rekursif -----
-    private void setFontRecursively(Component component, Font font) {
-        component.setFont(font);
-        if (component instanceof Container) {
-            for (Component child : ((Container) component).getComponents()) {
-                setFontRecursively(child, font);
-            }
-        }
+    // ---- Helper untuk mengatur font tombol -----
+    private void applyButtonFont(JButton b) {
+        b.setFont(fontBold);
     }
 
     // ---- Clear Form -----
     public void clearForm() {
-        tfId.setText(""); 
-        tfNama.setText(""); 
+        tfId.setText("");
+        tfNama.setText("");
         taMateri.setText("");
-        tfJamMulai.setText(""); 
-        tfJamSelesai.setText(""); 
+        tfJamMulai.setText("");
+        tfJamSelesai.setText("");
         cbHari.setSelectedIndex(0);
     }
 }
