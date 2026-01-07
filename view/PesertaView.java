@@ -14,13 +14,13 @@ public class PesertaView extends JFrame {
 
     // ---- Komponen Form ----
     public JTextField tfId = new JTextField();
-    public JTextField tfNama = new JTextField();
-    public JTextField tfNoHp = new JTextField();
+    public JTextField tfNama = new JTextField(20);
+    public JTextField tfNoHp = new JTextField(20);
     public JTextArea taAlamat = new JTextArea(3, 20);
 
     // ---- Tombol ----
     public JButton btnAdd = new JButton("Tambah");
-    public JButton btnUpdate = new JButton("Update");
+    public JButton btnUpdate = new JButton("Ubah");
     public JButton btnDelete = new JButton("Hapus");
     public JButton btnClear = new JButton("Clear");
     public JButton btnRefresh = new JButton("Refresh");
@@ -29,13 +29,18 @@ public class PesertaView extends JFrame {
     public JTable table;
     public DefaultTableModel tableModel;
 
+    // ---- Font ----
+    private Font customFont = new Font("Times New Roman", Font.PLAIN, 14);
+    private Font headerFont = new Font("Times New Roman", Font.BOLD, 14);
+
     // ---- Konstruktor ----
     public PesertaView() {
-        super("Manajemen Peserta");
+        super("Kelasync App - Manajemen Peserta");
 
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setSize(800, 550);
+        setSize(900, 600);
         setLocationRelativeTo(null);
+        setLayout(new BorderLayout(10, 10));
 
         // ---- Event saat window ditutup ----
         addWindowListener(new WindowAdapter() {
@@ -50,36 +55,46 @@ public class PesertaView extends JFrame {
             }
         });
 
-        // ---- Panel Form ----
-        JPanel form = new JPanel(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
-        c.insets = new Insets(6, 6, 6, 6);
-        c.fill = GridBagConstraints.HORIZONTAL;
+        // ---- Panel Input ----
+        JPanel pnlInput = new JPanel(new GridLayout(4, 2, 5, 5));
+        pnlInput.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         tfId.setVisible(false);
 
-        c.gridx = 0; c.gridy = 0;
-        form.add(new JLabel("Nama Peserta:"), c);
-        c.gridx = 1; form.add(tfNama, c);
+        // Menambahkan Label dan Field
+        pnlInput.add(createStyledLabel("Nama Peserta:"));
+        pnlInput.add(tfNama);
 
-        c.gridx = 0; c.gridy = 1;
-        form.add(new JLabel("No HP:"), c);
-        c.gridx = 1; form.add(tfNoHp, c);
+        pnlInput.add(createStyledLabel("No HP:"));
+        pnlInput.add(tfNoHp);
 
-        c.gridx = 0; c.gridy = 2;
-        form.add(new JLabel("Alamat:"), c);
-        c.gridx = 1; form.add(new JScrollPane(taAlamat), c);
+        pnlInput.add(createStyledLabel("Alamat:"));
+        pnlInput.add(new JScrollPane(taAlamat));
 
         // ---- Panel Tombol ----
-        JPanel buttons = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        buttons.add(btnAdd);
-        buttons.add(btnUpdate);
-        buttons.add(btnDelete);
-        buttons.add(btnClear);
-        buttons.add(btnRefresh);
+        JPanel pnlTombol = new JPanel();
+        applyButtonFont(btnAdd);
+        applyButtonFont(btnUpdate);
+        applyButtonFont(btnDelete);
+        applyButtonFont(btnClear);
+        applyButtonFont(btnRefresh);
+
+        pnlTombol.add(btnAdd);
+        pnlTombol.add(btnUpdate);
+        pnlTombol.add(btnDelete);
+        pnlTombol.add(btnClear);
+        pnlTombol.add(btnRefresh);
+
+        pnlInput.add(new JLabel(""));
+        pnlInput.add(pnlTombol);
+
+        // ---- Terapkan Font ke Komponen ----
+        tfNama.setFont(customFont);
+        tfNoHp.setFont(customFont);
+        taAlamat.setFont(customFont);
 
         // ---- Tabel ----
-        String[] cols = {"ID", "Nama", "No HP", "Alamat"};
+        String[] cols = { "ID", "Nama", "No HP", "Alamat" };
         tableModel = new DefaultTableModel(cols, 0) {
             @Override
             public boolean isCellEditable(int r, int c) {
@@ -88,17 +103,14 @@ public class PesertaView extends JFrame {
         };
 
         table = new JTable(tableModel);
+        table.setFont(customFont); // Font isi tabel
+        table.getTableHeader().setFont(headerFont); // Font judul kolom
+        table.setRowHeight(25); // Menyesuaikan tinggi baris agar font terlihat bagus
         JScrollPane spTable = new JScrollPane(table);
-        spTable.setPreferredSize(new Dimension(780, 280));
 
         // ---- Layout Utama ----
-        getContentPane().setLayout(new BorderLayout());
-        getContentPane().add(form, BorderLayout.NORTH);
-        getContentPane().add(buttons, BorderLayout.CENTER);
-        getContentPane().add(spTable, BorderLayout.SOUTH);
-
-        // ---- Apply Font ----
-        applyTimesNewRoman();
+        add(pnlInput, BorderLayout.NORTH);
+        add(spTable, BorderLayout.CENTER);
 
         // ---- Init Controller ----
         controller = new PesertaController(this);
@@ -106,24 +118,16 @@ public class PesertaView extends JFrame {
         setVisible(true);
     }
 
-    // ---- Font ----
-    private void applyTimesNewRoman() {
-        Font plain = new Font("Times New Roman", Font.PLAIN, 12);
-        Font bold  = new Font("Times New Roman", Font.BOLD, 12);
-
-        if (table.getTableHeader() != null) {
-            table.getTableHeader().setFont(bold);
-        }
-        setFontRecursively(getContentPane(), plain);
+    // Helper method untuk membuat Label dengan font custom
+    private JLabel createStyledLabel(String text) {
+        JLabel label = new JLabel(text);
+        label.setFont(customFont);
+        return label;
     }
 
-    private void setFontRecursively(Component c, Font f) {
-        c.setFont(f);
-        if (c instanceof Container) {
-            for (Component child : ((Container) c).getComponents()) {
-                setFontRecursively(child, f);
-            }
-        }
+    // Helper method untuk menerapkan font ke tombol
+    private void applyButtonFont(JButton button) {
+        button.setFont(headerFont);
     }
 
     // ---- Clear Form ----
