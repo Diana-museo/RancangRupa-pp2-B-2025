@@ -84,13 +84,13 @@ public class PesertaController {
         String alamat = view.taAlamat.getText().trim();
 
         if (nama.isEmpty()) {
-            JOptionPane.showMessageDialog(view, "Nama peserta wajib diisi");
+            JOptionPane.showMessageDialog(view, "Semua kolom wajib diisi");
             view.tfNama.requestFocus();
             return false;
         }
 
         if (noHp.isEmpty()) {
-            JOptionPane.showMessageDialog(view, "No HP wajib diisi");
+            JOptionPane.showMessageDialog(view, "Semua kolom wajib diisi");
             view.tfNoHp.requestFocus();
             return false;
         }
@@ -103,7 +103,7 @@ public class PesertaController {
         }
 
         if (alamat.isEmpty()) {
-            JOptionPane.showMessageDialog(view, "Alamat wajib diisi");
+            JOptionPane.showMessageDialog(view, "Semua kolom wajib diisi");
             view.taAlamat.requestFocus();
             return false;
         }
