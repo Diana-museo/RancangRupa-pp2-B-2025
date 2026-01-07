@@ -141,7 +141,9 @@ public class PendaftaranController {
             // Refresh tabel pendaftaran
             loadData();
 
-            JOptionPane.showMessageDialog(view, "Data berhasil di-refresh");
+            // HAPUS BARIS INI untuk tidak menampilkan pesan
+            // JOptionPane.showMessageDialog(view, "Data berhasil di-refresh");
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(view, "Error refreshing data: " + e.getMessage());
         }
