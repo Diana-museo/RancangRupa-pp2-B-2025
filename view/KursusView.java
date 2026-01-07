@@ -20,10 +20,10 @@ public class KursusView extends JFrame {
     public JComboBox<String> cbPengajar = new JComboBox<>();
 
     // ---- Deklarasi Tombol -----
-    public JButton btnAdd = new JButton("Tambah");
+    public JButton btnAdd = new JButton("Simpan"); 
     public JButton btnUpdate = new JButton("Update");
     public JButton btnDelete = new JButton("Hapus");
-    public JButton btnClear = new JButton("Clear");
+    public JButton btnClear = new JButton("Bersih"); 
     public JButton btnRefresh = new JButton("Refresh");
 
     // ---- Deklarasi Tabel -----
@@ -32,35 +32,39 @@ public class KursusView extends JFrame {
 
     // ---- Konstruktor View -----
     public KursusView() {
-        super("Manajemen Kursus (Mata Pelajaran SMA)");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        super("Kelasync App - Manajemen Kursus");
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Tidak tertutup semua
         setSize(900, 600);
         setLocationRelativeTo(null);
 
         // ---- Panel Form Input -----
         JPanel form = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
-        c.insets = new Insets(6, 6, 6, 6);
-        c.fill = GridBagConstraints.HORIZONTAL;
+        c.insets = new Insets(6, 10, 6, 10);
+        c.anchor = GridBagConstraints.WEST;
 
         tfId.setVisible(false);
         
         // ---- Tambah Label dan Field -----
         c.gridx = 0; c.gridy = 0;
         form.add(new JLabel("Mata Pelajaran:"), c);
-        c.gridx = 1; form.add(tfNama, c);
+        c.gridx = 1; c.weightx = 1.0; c.fill = GridBagConstraints.HORIZONTAL;
+        form.add(tfNama, c);
 
-        c.gridx = 0; c.gridy = 1;
+        c.gridx = 0; c.gridy = 1; c.weightx = 0;
         form.add(new JLabel("Materi:"), c);
-        c.gridx = 1; form.add(new JScrollPane(taMateri), c);
+        c.gridx = 1; c.fill = GridBagConstraints.HORIZONTAL;
+        form.add(new JScrollPane(taMateri), c);
 
         c.gridx = 0; c.gridy = 2;
         form.add(new JLabel("Hari:"), c);
-        c.gridx = 1; form.add(cbHari, c);
+        c.gridx = 1; c.fill = GridBagConstraints.NONE;
+        form.add(cbHari, c);
 
         c.gridx = 0; c.gridy = 3;
         form.add(new JLabel("Jam Mulai:"), c);
-        c.gridx = 1; form.add(tfJamMulai, c);
+        c.gridx = 1; c.fill = GridBagConstraints.HORIZONTAL;
+        form.add(tfJamMulai, c);
 
         c.gridx = 0; c.gridy = 4;
         form.add(new JLabel("Jam Selesai:"), c);
@@ -71,12 +75,17 @@ public class KursusView extends JFrame {
         c.gridx = 1; form.add(cbPengajar, c);
 
         // ---- Panel Tombol -----
-        JPanel buttons = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel buttons = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         buttons.add(btnAdd); 
         buttons.add(btnUpdate); 
         buttons.add(btnDelete); 
         buttons.add(btnClear); 
         buttons.add(btnRefresh);
+
+        // Tombol rapi di bagian atas
+        JPanel northPanel = new JPanel(new BorderLayout());
+        northPanel.add(form, BorderLayout.CENTER);
+        northPanel.add(buttons, BorderLayout.SOUTH);
 
         // ---- Inisialisasi Tabel -----
         String[] cols = {"ID", "Mata Pelajaran", "Materi", "Hari", "Jam Mulai", "Jam Selesai", "Pengajar ID"};
@@ -86,7 +95,6 @@ public class KursusView extends JFrame {
         };
         table = new JTable(tableModel);
         JScrollPane spTable = new JScrollPane(table);
-        spTable.setPreferredSize(new Dimension(880, 300));
 
         // ---- Isi Combobox Hari -----
         String[] hari = {"Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"};
@@ -95,10 +103,9 @@ public class KursusView extends JFrame {
         }
 
         // ---- Layout Utama -----
-        getContentPane().setLayout(new BorderLayout());
-        getContentPane().add(form, BorderLayout.NORTH);
-        getContentPane().add(buttons, BorderLayout.CENTER);
-        getContentPane().add(spTable, BorderLayout.SOUTH);
+        getContentPane().setLayout(new BorderLayout(10, 10));
+        getContentPane().add(northPanel, BorderLayout.NORTH);
+        getContentPane().add(spTable, BorderLayout.CENTER);
 
         // ---- Apply Font -----
         applyTimesNewRoman();
