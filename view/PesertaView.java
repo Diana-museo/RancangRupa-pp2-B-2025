@@ -2,9 +2,10 @@ package id.rancangrupa.kelasync.view;
 
 import id.rancangrupa.kelasync.controller.PesertaController;
 import javax.swing.*;
-import id.rancangrupa.kelasync.util.DBConnection;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class PesertaView extends JFrame {
 
@@ -31,9 +32,23 @@ public class PesertaView extends JFrame {
     // ---- Konstruktor ----
     public PesertaView() {
         super("Manajemen Peserta");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(800, 550);
         setLocationRelativeTo(null);
+
+        // ---- Event saat window ditutup ----
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                // tampilkan kembali Kelasync App (frame lain yang masih ada)
+                for (Frame f : Frame.getFrames()) {
+                    if (f != PesertaView.this && f.isDisplayable()) {
+                        f.setVisible(true);
+                    }
+                }
+            }
+        });
 
         // ---- Panel Form ----
         JPanel form = new JPanel(new GridBagLayout());
@@ -86,7 +101,7 @@ public class PesertaView extends JFrame {
         applyTimesNewRoman();
 
         // ---- Init Controller ----
-        this.controller = new PesertaController(this);
+        controller = new PesertaController(this);
 
         setVisible(true);
     }
