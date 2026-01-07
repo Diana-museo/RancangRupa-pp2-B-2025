@@ -1,6 +1,6 @@
-package id.rancangrupa.kelasync.view;
+package id.rancangrupa.kelasync2.view;
 
-import id.rancangrupa.kelasync.controller.KursusController;
+import id.rancangrupa.kelasync2.controller.KursusController;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -22,10 +22,8 @@ public class KursusView extends JFrame {
     // ---- Deklarasi Tombol -----
     public JButton btnAdd = new JButton("Tambah");
     public JButton btnUpdate = new JButton("Ubah");
-    public JButton btnAdd = new JButton("Simpan");
-    public JButton btnUpdate = new JButton("Update");
     public JButton btnDelete = new JButton("Hapus");
-    public JButton btnClear = new JButton("Bersih");
+    public JButton btnClear = new JButton("Clear");
     public JButton btnRefresh = new JButton("Refresh");
 
     // ---- Deklarasi Tabel -----
@@ -69,45 +67,6 @@ public class KursusView extends JFrame {
         scrollMateri.setPreferredSize(new Dimension(200, 60));
         pnlInput.add(scrollMateri);
 
-        // ---- Panel Form Input -----
-        JPanel form = new JPanel(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
-        c.insets = new Insets(6, 10, 6, 10);
-        c.anchor = GridBagConstraints.WEST;
-
-        tfId.setVisible(false);
-
-        // ---- Tambah Label dan Field -----
-        c.gridx = 0;
-        c.gridy = 0;
-        form.add(new JLabel("Mata Pelajaran:"), c);
-        c.gridx = 1;
-        c.weightx = 1.0;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        form.add(tfNama, c);
-
-        c.gridx = 0;
-        c.gridy = 1;
-        c.weightx = 0;
-        form.add(new JLabel("Materi:"), c);
-        c.gridx = 1;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        form.add(new JScrollPane(taMateri), c);
-
-        c.gridx = 0;
-        c.gridy = 2;
-        form.add(new JLabel("Hari:"), c);
-        c.gridx = 1;
-        c.fill = GridBagConstraints.NONE;
-        form.add(cbHari, c);
-
-        c.gridx = 0;
-        c.gridy = 3;
-        form.add(new JLabel("Jam Mulai:"), c);
-        c.gridx = 1;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        form.add(tfJamMulai, c);
-
         // Kolom 3: Jam Mulai
         pnlInput.add(createLabel("Jam Mulai (jam:menit):"));
         pnlInput.add(tfJamMulai);
@@ -149,19 +108,6 @@ public class KursusView extends JFrame {
         tfJamSelesai.setFont(fontPlain);
         cbPengajar.setFont(fontPlain);
 
-        // ---- Panel Tombol -----
-        JPanel buttons = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        buttons.add(btnAdd);
-        buttons.add(btnUpdate);
-        buttons.add(btnDelete);
-        buttons.add(btnClear);
-        buttons.add(btnRefresh);
-
-        // Tombol rapi di bagian atas
-        JPanel northPanel = new JPanel(new BorderLayout());
-        northPanel.add(form, BorderLayout.CENTER);
-        northPanel.add(buttons, BorderLayout.SOUTH);
-
         // ---- Inisialisasi Tabel -----
         String[] cols = { "ID", "Mata Pelajaran", "Materi", "Hari", "Jam Mulai", "Jam Selesai", "Pengajar ID" };
         tableModel = new DefaultTableModel(cols, 0) {
@@ -186,12 +132,6 @@ public class KursusView extends JFrame {
         pnlMainForm.add(pnlInputWithButtons, BorderLayout.NORTH);
         add(pnlMainForm, BorderLayout.NORTH);
         add(spTable, BorderLayout.CENTER);
-        getContentPane().setLayout(new BorderLayout(10, 10));
-        getContentPane().add(northPanel, BorderLayout.NORTH);
-        getContentPane().add(spTable, BorderLayout.CENTER);
-
-        // ---- Apply Font -----
-        applyTimesNewRoman();
 
         // ---- Inisialisasi Controller -----
         this.controller = new KursusController(this);
